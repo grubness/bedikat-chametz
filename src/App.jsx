@@ -102,6 +102,7 @@ export default function App() {
   const [toast,        setToast]        = useState('');
   const [loading,      setLoading]      = useState('');
   const [notifEnabled, setNotifEnabled] = useState(false);
+  const [showSalePrompt, setShowSalePrompt] = useState(false);
 
   const fileRef      = useRef();
   const gpsArr       = useRef([]);
@@ -191,6 +192,7 @@ export default function App() {
       setUserName(nameIn.trim()); setRoomCode(code); setIsAdmin(true);
       await startSub(code);
       showToast(`Room created! Code: ${code}`);
+      if (!load('bcSaleShown', false)) { save('bcSaleShown', true); setShowSalePrompt(true); }
     } catch { showToast('Error — check Firebase config'); }
     finally   { setLoading(''); }
   }
@@ -579,7 +581,7 @@ export default function App() {
         <Modal title="The Blessing" onClose={() => setShowBracha(false)}>
           <PrayerBlock data={BRACHA} label="Al Bi'ur Chametz" />
           <Btn primary onClick={() => speakHebrew(BRACHA.translit)} style={{marginTop:4}}>
-            
+            🔊 Listen
           </Btn>
           <p style={{fontSize:13, color:C.muted, lineHeight:1.55}}>
             Recite before beginning the search. Do not speak unnecessarily until the search is complete.
@@ -592,11 +594,25 @@ export default function App() {
         <Modal title="Kol Chamira — Nullification" onClose={() => setShowBitul(false)}>
           <PrayerBlock data={BITUL} label="After the Search" />
           <Btn primary onClick={() => speakHebrew(BITUL.translit)} style={{marginTop:4}}>
-            
+            🔊 Listen
           </Btn>
           <p style={{fontSize:13, color:C.muted, lineHeight:1.55}}>
             Recite after the search is complete. Must be understood — recite in a language you know if needed.
           </p>
+        </Modal>
+      )}
+
+      {/* ════ CHAMETZ SALE PROMPT ═══════════════════════════════════════════ */}
+      {showSalePrompt && (
+        <Modal title="Sell Your Chametz" onClose={() => setShowSalePrompt(false)}>
+          <p style={{fontSize:15, lineHeight:1.65, color:C.text, margin:0}}>
+            Before Passover you must sell or dispose of all chametz. Would you like to sell your chametz online through a rabbi?
+          </p>
+          <Btn primary onClick={() => {
+            window.open('https://www.chabad.org/holidays/passover/sell_chometz_cdo/jewish/Sell-Your-Chametz-Online.htm', '_blank', 'noopener');
+            setShowSalePrompt(false);
+          }}>Yes — Sell My Chametz</Btn>
+          <Btn ghost onClick={() => setShowSalePrompt(false)}>Not Now</Btn>
         </Modal>
       )}
 
@@ -778,6 +794,14 @@ function GrandFinale({ pieces, onBitul, onClose, onReset }) {
 
         <div style={{display:'flex', flexDirection:'column', gap:10}}>
           <Btn primary onClick={onBitul}>Recite Kol Chamira 🙏</Btn>
+          <Btn secondary onClick={() => {
+            const msg = 'We found all 10 pieces of chametz! 🕯 Try Bedikat Chametz — the family chametz search app: https://bedikat-chametz.vercel.app';
+            if (navigator.share) {
+              navigator.share({ title: 'Bedikat Chametz', text: msg }).catch(() => {});
+            } else {
+              navigator.clipboard?.writeText(msg).then(() => {}).catch(() => {});
+            }
+          }}>Share 🎉</Btn>
           {onReset && <Btn secondary onClick={onReset}>New Search</Btn>}
           <Btn ghost onClick={onClose}>Close</Btn>
         </div>
@@ -1017,7 +1041,7 @@ function DeepGuide() {
     <GP c="Bedikat chametz (בְּדִיקַת חָמֵץ) is the mitzvah of searching one's home for all remaining chametz the night before Passover. Even after thorough pre-Pesach cleaning, this final candlelit search ensures nothing was missed."/>
     <GP c="The search takes place on the night of the 14th of Nissan, after nightfall. When Passover begins Saturday night, it moves to Thursday night."/>
     <h4 style={{fontSize:16, fontWeight:600, margin:'16px 0 6px'}}>Why exactly 10 pieces?</h4>
-    <GP c="Since the house is already clean, there may be nothing to find — making the blessing a blessing in vain. Hiding 10 pieces ensures the search always finds something. Recorded in the Or Zarua (c. 1300)."/>
+    <GP c="The mitzvah itself is to search for chametz. Hiding 10 pieces is a minhag (custom) — not the mitzvah. Because the house is already thoroughly cleaned, there may be nothing to find, which would make the blessing a bracha l'vatala (a blessing recited in vain). Hiding 10 pieces ensures the search always yields something, so the blessing is justified. Recorded in the Or Zarua (c. 1300)."/>
     <h4 style={{fontSize:16, fontWeight:600, margin:'16px 0 6px'}}>The Bitul</h4>
     <GP c="The Kol Chamira declaration legally renounces ownership of any chametz accidentally missed. It must be understood — recite the English if Aramaic is unfamiliar."/>
     <GTip c="📚 Laws codified in Shulchan Aruch, Orach Chaim 431–435."/>
