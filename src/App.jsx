@@ -31,28 +31,6 @@ const BITUL = {
   english:'All leaven and anything leavened that is in my possession, which I have neither seen nor removed, and about which I am unaware, shall be considered nullified and ownerless as the dust of the earth.',
 };
 
-// ─── Hebrew pronunciation phoneme map ─────────────────────────────────────────
-// We speak the transliteration slowly with Hebrew-tuned phonetics
-function speakHebrew(translit) {
-  if (!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(translit);
-  // Prefer a Hebrew voice if available, fall back to slow English
-  const voices = window.speechSynthesis.getVoices();
-  const hebrewVoice = voices.find(v => v.lang.startsWith('he'));
-  if (hebrewVoice) {
-    // If Hebrew voice exists, speak the actual Hebrew text
-    u.text = translit; // use transliteration even with Hebrew voice for clarity
-    u.voice = hebrewVoice;
-    u.lang = 'he-IL';
-  } else {
-    u.lang = 'en-US';
-  }
-  u.rate = 0.72;  // slower for following along
-  u.pitch = 1.0;
-  window.speechSynthesis.speak(u);
-}
-
 // ─── Utilities ────────────────────────────────────────────────────────────────
 const genCode = () => Math.random().toString(36).slice(2,7).toUpperCase();
 const nowStr  = () => new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
@@ -580,9 +558,6 @@ export default function App() {
       {showBracha && (
         <Modal title="The Blessing" onClose={() => setShowBracha(false)}>
           <PrayerBlock data={BRACHA} label="Al Bi'ur Chametz" />
-          <Btn primary onClick={() => speakHebrew(BRACHA.translit)} style={{marginTop:4}}>
-            🔊 Listen
-          </Btn>
           <p style={{fontSize:13, color:C.muted, lineHeight:1.55}}>
             Recite before beginning the search. Do not speak unnecessarily until the search is complete.
           </p>
@@ -593,9 +568,6 @@ export default function App() {
       {showBitul && (
         <Modal title="Kol Chamira — Nullification" onClose={() => setShowBitul(false)}>
           <PrayerBlock data={BITUL} label="After the Search" />
-          <Btn primary onClick={() => speakHebrew(BITUL.translit)} style={{marginTop:4}}>
-            🔊 Listen
-          </Btn>
           <p style={{fontSize:13, color:C.muted, lineHeight:1.55}}>
             Recite after the search is complete. Must be understood — recite in a language you know if needed.
           </p>
