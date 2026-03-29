@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bedikat Chametz — App Overview</title>
+<style>
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Tokens ── */
+:root {
+  --ink:    #1a1208;
+  --parch:  #fdf6e8;
+  --parch2: #f7edda;
+  --gold:   #c8882a;
+  --flame:  #e85d04;
+  --cream:  #fffbf2;
+  --rule:   rgba(200,136,42,.2);
+  --muted:  #7a6545;
+  --shadow: rgba(26,18,8,.1);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  background: var(--parch);
+  color: var(--ink);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ── Keyframes ── */
+@keyframes flicker {
+  0%,100% { filter: drop-shadow(0 0 10px #ff8c00) drop-shadow(0 0 28px #ffd700); }
+  30%     { filter: drop-shadow(0 0 18px #ff4500) drop-shadow(0 0 42px #ff8c00); }
+  70%     { filter: drop-shadow(0 0 6px  #ffd700) drop-shadow(0 0 16px #ff8c00); }
+}
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(18px); }
+  to   { opacity:1; transform:none; }
+}
+
+/* ══════════════════════════════════════════════
+   HERO
+══════════════════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 60px 28px 80px;
+  text-align: center;
+  background: radial-gradient(ellipse 70% 60% at 50% 38%, #fff8e0 0%, var(--parch) 72%);
+  position: relative; overflow: hidden;
+}
+
+/* decorative rings */
+.hero::before, .hero::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid var(--rule);
+  pointer-events: none;
+}
+.hero::before { width:520px; height:520px; top:-210px; left:-190px; }
+.hero::after  { width:340px; height:340px; bottom:-90px; right:-110px; }
+
+.candle {
+  font-size: 72px;
+  display: block;
+  margin-bottom: 18px;
+  animation: flicker 2.8s ease-in-out infinite;
+}
+
+.eyebrow {
+  font-size: 11px; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--gold);
+  font-family: Georgia, serif;
+  margin-bottom: 14px;
+}
+
+h1 {
+  font-size: clamp(52px, 11vw, 82px);
+  font-weight: bold; line-height: 1;
+  color: var(--ink);
+  letter-spacing: -2px;
+  margin-bottom: 12px;
+  animation: fadeUp .6s ease both;
+}
+
+.hebrew-title {
+  font-size: clamp(22px, 5vw, 34px);
+  color: var(--gold);
+  direction: rtl;
+  margin-bottom: 18px;
+  font-style: italic;
+}
+
+.hero-sub {
+  font-size: clamp(16px, 3vw, 20px);
+  color: var(--muted);
+  max-width: 520px;
+  margin: 0 auto 36px;
+  font-style: italic;
+}
+
+.badge-row {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  justify-content: center; margin-bottom: 44px;
+}
+.badge {
+  background: white;
+  border: 1px solid var(--rule);
+  border-radius: 100px;
+  padding: 7px 18px;
+  font-size: 13px; color: var(--muted);
+  box-shadow: 0 2px 8px var(--shadow);
+  font-family: Georgia, serif;
+}
+
+.cta {
+  display: inline-block;
+  background: var(--gold);
+  color: white;
+  border-radius: 100px;
+  padding: 16px 40px;
+  font-size: 18px;
+  font-family: Georgia, serif;
+  font-weight: bold;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(200,136,42,.4);
+  letter-spacing: .3px;
+}
+
+/* ══════════════════════════════════════════════
+   SHARED SECTION STYLES
+══════════════════════════════════════════════ */
+.section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 72px 28px;
+}
+
+.section-eye {
+  font-size: 11px; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 10px;
+  display: block;
+}
+
+.section-title {
+  font-size: clamp(28px, 5vw, 40px);
+  font-weight: bold; line-height: 1.15;
+  letter-spacing: -.8px;
+  margin-bottom: 16px;
+  color: var(--ink);
+}
+
+.section-body {
+  font-size: 17px; color: #4a3c28;
+  line-height: 1.78; max-width: 640px;
+  margin-bottom: 32px;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--rule);
+  max-width: 900px; margin: 0 auto;
+}
+
+/* ══════════════════════════════════════════════
+   PROBLEM / SOLUTION
+══════════════════════════════════════════════ */
+.ps-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width:580px) { .ps-grid { grid-template-columns:1fr; } }
+
+.ps-card {
+  border-radius: 18px;
+  padding: 28px 24px;
+}
+.ps-card.problem {
+  background: #fff8f0;
+  border: 1px solid rgba(232,93,4,.2);
+}
+.ps-card.solution {
+  background: linear-gradient(135deg,#fffdf6,#fff8e6);
+  border: 1px solid var(--rule);
+}
+.ps-icon  { font-size: 34px; display:block; margin-bottom:12px; }
+.ps-title { font-size: 19px; font-weight:bold; margin-bottom:10px; }
+.ps-body  { font-size: 15px; color:var(--muted); line-height:1.65; }
+
+/* ══════════════════════════════════════════════
+   FEATURE GRID
+══════════════════════════════════════════════ */
+.feat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+  gap: 16px;
+}
+
+.feat {
+  background: white;
+  border-radius: 16px;
+  padding: 24px 22px;
+  border: 1px solid var(--rule);
+  box-shadow: 0 2px 12px var(--shadow);
+  position: relative; overflow: hidden;
+}
+.feat-top-bar {
+  position: absolute; top:0; left:0; right:0; height:3px;
+  background: linear-gradient(90deg, var(--gold), var(--flame));
+}
+.feat-icon  { font-size:28px; display:block; margin-bottom:10px; }
+.feat-title {
+  font-size: 16px; font-weight: bold;
+  margin-bottom: 8px; color: var(--ink);
+}
+.feat-body  { font-size: 14px; color: var(--muted); line-height:1.62; }
+.feat-tag   {
+  display: inline-block;
+  background: #fff5e0; color: var(--gold);
+  border-radius: 100px; padding: 2px 10px;
+  font-size: 11px; letter-spacing:.4px;
+  margin-top: 10px;
+  text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════════════
+   HOW IT WORKS
+══════════════════════════════════════════════ */
+.steps { display:flex; flex-direction:column; gap:0; }
+.step-row {
+  display: flex; gap: 22px; align-items:flex-start;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.step-row:last-child { border-bottom:none; }
+.step-num {
+  flex-shrink:0;
+  width:42px; height:42px; border-radius:21px;
+  background: var(--gold);
+  color:white; font-size:18px; font-weight:bold;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow: 0 4px 12px rgba(200,136,42,.3);
+}
+.step-title { font-size:19px; font-weight:bold; margin-bottom:6px; }
+.step-body  { font-size:15px; color:var(--muted); line-height:1.65; }
+
+/* ══════════════════════════════════════════════
+   TECH SPECS
+══════════════════════════════════════════════ */
+.specs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(195px,1fr));
+  gap: 12px;
+}
+.spec {
+  background: white;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 16px 16px;
+}
+.spec-label {
+  font-size: 10px; letter-spacing:1.5px;
+  text-transform:uppercase; color:var(--gold);
+  margin-bottom: 6px; display:block;
+}
+.spec-val { font-size:15px; color:var(--ink); }
+
+/* ══════════════════════════════════════════════
+   COST BOX
+══════════════════════════════════════════════ */
+.cost-box {
+  background: linear-gradient(135deg,#fffdf0,#fff8e0);
+  border: 1.5px solid var(--rule);
+  border-radius: 20px;
+  padding: 36px 32px;
+  display: flex; flex-wrap:wrap; gap:28px; align-items:center;
+  box-shadow: 0 4px 24px var(--shadow);
+}
+.cost-num {
+  font-size: 72px; font-weight:bold;
+  color: var(--gold); line-height:1; flex-shrink:0;
+}
+.cost-content h3 { font-size:22px; font-weight:bold; margin-bottom:10px; }
+.cost-content p  { font-size:15px; color:var(--muted); line-height:1.68; }
+
+/* ══════════════════════════════════════════════
+   DEDICATION
+══════════════════════════════════════════════ */
+.dedication {
+  text-align: center;
+  padding: 64px 28px 80px;
+  background: radial-gradient(ellipse 60% 50% at 50% 40%, #fff9ec, var(--parch));
+}
+.ded-line {
+  width:80px; height:1px;
+  background: linear-gradient(90deg,transparent,var(--gold),transparent);
+  margin: 0 auto 32px;
+}
+.ded-candle { font-size:38px; display:block; margin-bottom:16px; }
+.ded-text   { font-size:17px; color:var(--muted); line-height:2; }
+.ded-hebrew {
+  font-size: 27px; direction:rtl;
+  color: var(--ink); font-style:italic;
+  display:block; margin:12px 0;
+}
+.ded-creator {
+  font-size:13px; color:#b09070;
+  letter-spacing:.4px; margin-top:22px;
+  display:block;
+}
+
+/* ══════════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════════ */
+footer {
+  background: var(--ink);
+  color: rgba(255,255,255,.45);
+  text-align: center;
+  padding: 28px 24px;
+  font-size: 13px;
+}
+footer a { color: #e8a84a; text-decoration:none; }
+footer p + p { margin-top:6px; font-size:11px; opacity:.5; }
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══════════════════════════════════════════════════════════════════ -->
+<div class="hero">
+  <span class="eyebrow">A Free Jewish Holiday App</span>
+  <span class="candle">🕯</span>
+  <h1>Bedikat<br/>Chametz</h1>
+  <p class="hebrew-title">בְּדִיקַת חָמֵץ</p>
+  <p class="hero-sub">The collaborative search for chametz — with real-time family sync, proximity finding, and a built-in instructional guide</p>
+
+  <div class="badge-row">
+    <span class="badge">📱 Mobile Web — no download needed</span>
+    <span class="badge">👨‍👩‍👧‍👦 Multi-family real-time sync</span>
+    <span class="badge">📍 GPS + Photo tracking</span>
+    <span class="badge">🆓 Free for all families</span>
+  </div>
+
+  <a class="cta" href="#">Open the App 🕯</a>
+</div>
+
+<hr class="divider"/>
+
+<!-- ══ PROBLEM / SOLUTION ════════════════════════════════════════════════════ -->
+<div class="section">
+  <span class="section-eye">Why This Exists</span>
+  <h2 class="section-title">Solving the age-old chametz mystery</h2>
+  <p class="section-body">Every year, the same problem: 10 pieces hidden before Bedikat Chametz — and by the time the search begins, someone can't remember where piece #7 went. Now there's an answer.</p>
+
+  <div class="ps-grid">
+    <div class="ps-card problem">
+      <span class="ps-icon">😰</span>
+      <div class="ps-title">The Old Problem</div>
+      <div class="ps-body">10 pieces hidden throughout the house. No record of where. Search over — still missing one. Did we find it? Was it 9 or 10? The mitzvah ends in mild chaos every year.</div>
+    </div>
+    <div class="ps-card solution">
+      <span class="ps-icon">✨</span>
+      <div class="ps-title">The New Solution</div>
+      <div class="ps-body">Each piece is recorded with a photo, room, hint, and precision GPS snapshot. Every family member sees the live count. The app guides searchers directly to each piece.</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ══ FULL FEATURE LIST ═════════════════════════════════════════════════════ -->
+<div class="section">
+  <span class="section-eye">Full Feature List</span>
+  <h2 class="section-title">Everything the app does</h2>
+
+  <div class="feat-grid">
+
+    <div class="feat">
+      <div class="feat-top-bar"></div>
+      <span class="feat-icon">🏠</span>
+      <div class="feat-title">Family Room System</div>
+      <div class="feat-body">One family member creates a room and gets a 5-letter code. Others join instantly by entering the code — no accounts, no passwords, no App Store required.</div>
+      <span class="feat-tag">Multi-user</span>
+    </div>
+
+    <div class="feat">
+      <div class="feat-top-bar"></div>
+      <span class="feat-icon">🔄</span>
+      <div class="feat-title">Real-Time Live Sync</div>
+      <div class="feat-body">Powered by Firebase Realtime Database. The moment someone hides or finds a piece, every family member's screen updates instantly — even across different rooms or floors of the house.</div>
+      <span class="feat-tag">Firebase</span>
+    </div>
+
+    <div class="feat">
+      <div class="feat-top-bar"></div>
+      <span class="feat-icon">🫙</span>
+      <div class="feat-title">10-Piece Tracker</div>
+      <div class="feat-body">All 10 pieces displayed on a clear list. Each card shows its status, who hid it, when, which room, and any hint — color-coded green, orange, or grey at a glance.</div>
+      <span class="feat-tag">Core</span>
+    </div>
+
+    <div class="feat">
+      <div class="feat-top-bar"></div>
+      <span class="feat-icon">📍</span>
+      <div class="feat-title">Precision GPS Snapshot</div>
+      <div class="feat-body">When hiding a piece, the app samples GPS 5 times over ~8 seconds and computes a weighted average — the best possible indoor location fix, shown as ±Xm accuracy on each piece card.</div>
+      <span class="feat-tag">Apple-style</span>
+    </div>
+
+    <div class="feat">
+      <div class="feat-top-bar"></div>
+      <span class="feat-icon">📷</span>
+      <div class="feat-title">Hiding Spot Photo</div>
+      <div class="feat-body">Snap a photo of exactly where the piece is hidden using the device camera. Compressed automatically for fast sync. Shown to searchers as the ultimate visual clue when GPS alone isn't precise enough indoors.</div>
+      <span class="feat-tag">Visual Clue</span>
+    </div>
+
+    <div class="feat">
+      <div class="feat-top-bar"></div>
+      <span class="feat-icon">🔥</span>
+      <div class="feat-title">Proximity Finder</div>
+      <div class="feat-body">Tap any hidden piece to open the live Proximity Finder. A glowing orb pulses and changes color as you walk closer: 🔥 Right Here · ♨️ Very Close · 🌡 Getting Warm · ❄️ Getting Cold · 🧊 Far Away.</div>
+      <span class="feat-tag">Find My–style</span>
+    </div>
+
+    <div class="feat">
+      <div class="feat-top-bar"></div>
+      <span class="feat-icon">🧭</span>
+      <div class="feat-title">Compass Direction Arrow</div>
+      <div class="feat-body">When more than ~4 meters from the piece, a directional arrow rotates toward the target using live GPS bearing combined with the device's orientation sensor for compass-accurate pointing.</div>
+      <span class="feat-tag">Navigation</span>
+    </div>
+
+    <div class="feat">
+      <div class="feat-top-bar"></div>
+      <span class="feat-icon">💬</span>
+      <div class="feat-title">Text Hints</div>
+      <div class="feat-body">Add a short custom hint when hiding each piece — "behind the lamp," "under the seat cushion." Shown alongside the photo in the Finder so searchers have every possible clue to work with.</div>
+      <span class="feat-tag">Clue System</span>
+    </div>
+
+    <div class="feat">
+      <div class="feat-top-bar"></div>
+      <span class="feat-icon">🔔</span>
+      <div class="feat-title">Push Notifications</div>
+      <div class="feat-body">Opt in to get notified the instant another family member finds a piece — even when the app is in the background or the screen is locked. Works on both iOS (Add to Home Screen) and Android.</div>
+      <span class="feat-tag">Live Alerts</span>
+    </div>
+
+    <div class="feat">
+      <div class="feat-top-bar"></div>
+      <span class="feat-icon">📋</span>
+      <div class="feat-title">Activity Feed</div>
+      <div class="feat-body">A timestamped log of every action in the session — who hid what and when, who found what, who joined the room. A running family record of the entire search from start to finish.</div>
+      <span class="feat-tag">History</span>
+    </div>
+
+    <div class="feat">
+      <div class="feat-top-bar"></div>
+      <span class="feat-icon">✡️</span>
+      <div class="feat-title">Brachah with Audio</div>
+      <div class="feat-body">The full blessing before the search — in Hebrew script, transliteration, and English translation — with a "Hear Pronunciation" button that reads it aloud via the device speaker. Never fumble for the siddur in the dark.</div>
+      <span class="feat-tag">Prayer</span>
+    </div>
+
+    <div class="feat">
+      <div class="feat-top-bar"></div>
+      <span class="feat-icon">🙏</span>
+      <div class="feat-title">Kol Chamira (Bitul)</div>
+      <div class="feat-body">The Aramaic nullification declaration in Hebrew, transliteration, English, and audio. Prompted automatically after all 10 pieces are found. Includes a reminder that it must be understood, not merely recited.</div>
+      <span class="feat-tag">Prayer</span>
+    </div>
+
+    <div class="feat">
+      <div class="feat-top-bar"></div>
+      <span class="feat-icon">📖</span>
+      <div class="feat-title">Built-In Instructional Guide</div>
+      <div class="feat-body">Four-tab guide covering: Quick Start walkthrough, In-Depth halachic background, What You Need (supply list with explanations), and Timing reference for Erev Pesach. Sourced from halachic authorities.</div>
+      <span class="feat-tag">Education</span>
+    </div>
+
+    <div class="feat">
+      <div class="feat-top-bar"></div>
+      <span class="feat-icon">🎉</span>
+      <div class="feat-title">Completion Celebration</div>
+      <div class="feat-body">When the 10th piece is found, confetti fires and the app shows a full completion summary — who found each piece and in which room. Then immediately prompts the Kol Chamira with a reminder to bag everything for morning burning.</div>
+      <span class="feat-tag">Satisfying</span>
+    </div>
+
+    <div class="feat">
+      <div class="feat-top-bar"></div>
+      <span class="feat-icon">📲</span>
+      <div class="feat-title">Installable PWA</div>
+      <div class="feat-body">No App Store required. Visit the URL, tap "Add to Home Screen" on iPhone or "Install App" on Android. Launches like a native app with its own icon, splash screen, and full-screen experience.</div>
+      <span class="feat-tag">No Download</span>
+    </div>
+
+    <div class="feat">
+      <div class="feat-top-bar"></div>
+      <span class="feat-icon">👤</span>
+      <div class="feat-title">Flexible Roles</div>
+      <div class="feat-body">Anyone in the room can hide or find pieces — no rigid adult/child assignments. The room admin can reset all 10 pieces for a fresh start. Members can leave and rejoin at any time using the same room code.</div>
+      <span class="feat-tag">Family-Friendly</span>
+    </div>
+
+    <div class="feat">
+      <div class="feat-top-bar"></div>
+      <span class="feat-icon">⚠️</span>
+      <div class="feat-title">Honest Indoor GPS</div>
+      <div class="feat-body">The app displays GPS accuracy in metres and warns when signal is too imprecise for room-level guidance — explicitly telling searchers to use the photo clue for the final approach rather than over-promising GPS precision indoors.</div>
+      <span class="feat-tag">Honest UX</span>
+    </div>
+
+    <div class="feat">
+      <div class="feat-top-bar"></div>
+      <span class="feat-icon">♻️</span>
+      <div class="feat-title">Annual Fresh Reset</div>
+      <div class="feat-body">The room admin taps Reset to wipe all 10 pieces and start fresh each year. No old data carries over. Clean slate every Pesach — just like the chametz itself.</div>
+      <span class="feat-tag">Yearly Use</span>
+    </div>
+
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ══ HOW IT WORKS ══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <span class="section-eye">How It Works</span>
+  <h2 class="section-title">Start to finish in 5 steps</h2>
+
+  <div class="steps">
+    <div class="step-row">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-title">Create a Room</div>
+        <div class="step-body">The family admin opens the app, enters their name, and taps "Create Room." A unique 5-letter code is generated instantly. Share it by text or WhatsApp — family members join by entering the code on their own phones. Everyone is now synced to the same 10 pieces.</div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-title">Hide the 10 Pieces</div>
+        <div class="step-body">Before nightfall, anyone in the room uses the Hide tab to log each piece: select the room, add an optional text hint, snap a photo of the exact spot, and tap Save. The app takes a 5-sample GPS average for the most accurate location fix possible. All family members see the piece appear on their screens the moment it's saved.</div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-title">Recite the Brachah</div>
+        <div class="step-body">Once night falls and the family gathers, tap ✡️ to open the Brachah screen. Hebrew script, transliteration, and English translation are all displayed together. Tap the audio button to hear it pronounced clearly. Recite together before the search begins.</div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">4</div>
+      <div>
+        <div class="step-title">Search with the Proximity Finder</div>
+        <div class="step-body">Switch to the Find tab. Tap any hidden piece to open the Proximity Finder: a glowing orb pulses hotter as you get closer, a compass arrow points the way, and the hiding photo plus text hint are always visible. When you've found it — tap "Found It!" and everyone's screen updates live. Push notifications alert family members in the background.</div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">5</div>
+      <div>
+        <div class="step-title">Recite Kol Chamira &amp; Burn</div>
+        <div class="step-body">When the 10th piece is found, confetti fills the screen and a full completion summary shows who found each piece. Tap "Recite Kol Chamira" to nullify any missed chametz — Hebrew, transliteration, English, and audio all provided. Then bag all 10 pieces with the feather and wooden spoon and burn them the next morning before the deadline.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ══ TECH SPECS ════════════════════════════════════════════════════════════ -->
+<div class="section">
+  <span class="section-eye">Technical Specs</span>
+  <h2 class="section-title">How it's built</h2>
+  <p class="section-body">Reliability and simplicity above all. No native app, no account required, no personal data collected beyond your name and room activity.</p>
+
+  <div class="specs-grid">
+    <div class="spec"><span class="spec-label">Frontend</span><span class="spec-val">React 18 + Vite</span></div>
+    <div class="spec"><span class="spec-label">Database</span><span class="spec-val">Firebase Realtime DB</span></div>
+    <div class="spec"><span class="spec-label">Push Notifications</span><span class="spec-val">Firebase Cloud Messaging</span></div>
+    <div class="spec"><span class="spec-label">GPS Method</span><span class="spec-val">5-sample weighted average</span></div>
+    <div class="spec"><span class="spec-label">Compass</span><span class="spec-val">Device Orientation API</span></div>
+    <div class="spec"><span class="spec-label">Audio</span><span class="spec-val">Web Speech Synthesis API</span></div>
+    <div class="spec"><span class="spec-label">Platform</span><span class="spec-val">PWA — iOS &amp; Android</span></div>
+    <div class="spec"><span class="spec-label">Hosting</span><span class="spec-val">Vercel (auto-deploy)</span></div>
+    <div class="spec"><span class="spec-label">Photos</span><span class="spec-val">Compressed to ~200KB</span></div>
+    <div class="spec"><span class="spec-label">Accounts Required</span><span class="spec-val">None — room code only</span></div>
+    <div class="spec"><span class="spec-label">Data Collected</span><span class="spec-val">Name + room activity only</span></div>
+    <div class="spec"><span class="spec-label">Offline Support</span><span class="spec-val">Cached via PWA service worker</span></div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ══ PRICING ═══════════════════════════════════════════════════════════════ -->
+<div class="section">
+  <span class="section-eye">Pricing</span>
+  <h2 class="section-title">Free for every family</h2>
+
+  <div class="cost-box">
+    <div class="cost-num">$0</div>
+    <div class="cost-content">
+      <h3>Free to use, always</h3>
+      <p>The app is completely free. Firebase's generous free tier comfortably covers hundreds of families — especially for an app used only during Pesach season. If you'd like to support server costs, a voluntary contribution is always welcome and never required. No paywall, no tracking, no ads.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ══ DEDICATION ════════════════════════════════════════════════════════════ -->
+<div class="dedication">
+  <div class="ded-line"></div>
+  <span class="ded-candle">🕯</span>
+  <p class="ded-text">This app is dedicated in loving memory of</p>
+  <span class="ded-hebrew">יוסף ישראל בן שמעון מאיר ז״ל</span>
+  <p class="ded-text">who cherished this mitzvah</p>
+  <span class="ded-creator">Created by Shimon Rosenberg &nbsp;·&nbsp; Chag Kasher v'Sameach 🍷</span>
+</div>
+
+<!-- ══ FOOTER ════════════════════════════════════════════════════════════════ -->
+<footer>
+  <p>Bedikat Chametz App &nbsp;·&nbsp; Free for all families &nbsp;·&nbsp; <a href="#">Open the App</a></p>
+  <p>לע״נ יוסף ישראל בן שמעון מאיר ז״ל</p>
+</footer>
+
+</body>
+</html>
