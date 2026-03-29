@@ -11,7 +11,7 @@ import {
 } from './firebase';
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
-const C = {
+const SHEETS_URL="https://script.google.com/macros/s/AKfycbypGLLr9gkyVTKzMRLiMSd5WqMaIwW9_WxPrpI6F4I6O6bPT7rQY5uJCzMLNeOeZK8OMw/exec";const C = {
   bg:'#f2f2f7', surface:'#ffffff', surface2:'#f9f9fb', border:'#e5e5ea',
   label:'#636366', muted:'#8e8e93', text:'#1c1c1e',
   blue:'#007AFF', green:'#34c759', orange:'#FF9500', red:'#FF3B30',
@@ -337,7 +337,7 @@ export default function App() {
           </div>
           <div style={{width:'100%', display:'flex', flexDirection:'column', gap:10, animation:'fadeUp .7s .25s ease both', opacity:0}}>
             <Btn primary onClick={() => setScreen('home')}>Begin the Search</Btn>
-            <Btn ghost  onClick={() => setScreen('guide')}>About Bedikat Chametz</Btn>
+            <Btn ghost  onClick={() => setScreen('guide')}>About Bedikat Chametz</Btn>{userName&&roomCode&&(<div style={{marginTop:8,padding:"12px",background:"rgba(0,122,255,.08)",borderRadius:14,textAlign:"center"}}><div style={{fontSize:12,color:"#636366"}}>Your active room</div><div style={{fontSize:22,fontWeight:700,letterSpacing:3,color:"#007AFF"}}>{roomCode}</div><button onClick={()=>setScreen("session")} style={{marginTop:8,background:"#007AFF",color:"white",border:"none",borderRadius:10,padding:"8px 20px",fontSize:14,fontWeight:600,cursor:"pointer"}}>Rejoin Search</button></div>)}
           </div>
           <Dedication />
         </div>
