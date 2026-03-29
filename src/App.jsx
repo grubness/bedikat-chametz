@@ -579,7 +579,7 @@ export default function App() {
         <Modal title="The Blessing" onClose={() => setShowBracha(false)}>
           <PrayerBlock data={BRACHA} label="Al Bi'ur Chametz" />
           <Btn primary onClick={() => speakHebrew(BRACHA.translit)} style={{marginTop:4}}>
-            🔊 Hear Pronunciation
+            
           </Btn>
           <p style={{fontSize:13, color:C.muted, lineHeight:1.55}}>
             Recite before beginning the search. Do not speak unnecessarily until the search is complete.
@@ -592,7 +592,7 @@ export default function App() {
         <Modal title="Kol Chamira — Nullification" onClose={() => setShowBitul(false)}>
           <PrayerBlock data={BITUL} label="After the Search" />
           <Btn primary onClick={() => speakHebrew(BITUL.translit)} style={{marginTop:4}}>
-            🔊 Hear Pronunciation
+            
           </Btn>
           <p style={{fontSize:13, color:C.muted, lineHeight:1.55}}>
             Recite after the search is complete. Must be understood — recite in a language you know if needed.
