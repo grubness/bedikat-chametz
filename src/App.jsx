@@ -8,6 +8,7 @@ import { useState, useEffect, useRef } from 'react';
 import {
   createRoom, joinRoom, roomExists, updatePiece, logActivity,
   subscribeRoom, saveFcmToken, requestNotificationPermission, onForegroundMessage,
+  saveEmailRoom, lookupRoomByEmail,
 } from './firebase';
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
@@ -81,6 +82,7 @@ export default function App() {
   const [loading,      setLoading]      = useState('');
   const [notifEnabled, setNotifEnabled] = useState(false);
   const [showSalePrompt, setShowSalePrompt] = useState(false);
+  const [findEmailIn,   setFindEmailIn]   = useState('');
 
   const fileRef      = useRef();
   const gpsArr       = useRef([]);
@@ -170,6 +172,7 @@ export default function App() {
       setUserName(nameIn.trim()); setRoomCode(code); setIsAdmin(true);
       await startSub(code);
       showToast(`Room created! Code: ${code}`);
+      if (emailIn.trim()) { try { await saveEmailRoom(emailIn.trim(), code); } catch {} }
       if (!load('bcSaleShown', false)) { save('bcSaleShown', true); setShowSalePrompt(true); }
     } catch { showToast('Error — check Firebase config'); }
     finally   { setLoading(''); }
@@ -197,6 +200,18 @@ export default function App() {
     save('bcName',''); save('bcRoom',''); save('bcAdmin',false);
     setUserName(''); setRoomCode(''); setIsAdmin(false); setRoomData(null);
     setScreen('splash');
+  }
+
+  // ── Find room by email ────────────────────────────────────────────────────
+  async function handleFindByEmail() {
+    if (!findEmailIn.trim()) return showToast('Enter your email first');
+    setLoading('Looking up room…');
+    try {
+      const code = await lookupRoomByEmail(findEmailIn.trim());
+      if (code) { setCodeIn(code); showToast('Room code found!'); }
+      else showToast('No room found for that email');
+    } catch { showToast('Lookup failed — check connection'); }
+    finally { setLoading(''); }
   }
 
   // ── Precision GPS (5-sample weighted average) ────────────────────────────
@@ -342,6 +357,14 @@ export default function App() {
               onChange={e => setCodeIn(e.target.value.toUpperCase())} maxLength={5}/>
             <Btn primary onClick={handleJoin} style={{marginTop:8}}>Join Room</Btn>
             <Btn ghost  onClick={() => setJoinMode(false)}>Create a new room instead</Btn>
+            <div style={{display:'flex', alignItems:'center', gap:8, margin:'4px 0'}}>
+              <div style={{flex:1, height:1, background:C.border}}/>
+              <span style={{fontSize:12, color:C.muted, flexShrink:0}}>— or find by email —</span>
+              <div style={{flex:1, height:1, background:C.border}}/>
+            </div>
+            <input style={S.input} type="email" placeholder="Your email address"
+              value={findEmailIn} onChange={e => setFindEmailIn(e.target.value)}/>
+            <Btn secondary onClick={handleFindByEmail}>Find My Room</Btn>
           </> : <>
             <input style={{width:"100%",padding:"13px 15px",borderRadius:13,border:"1.5px solid #e5e5ea",fontSize:16,background:"white",outline:"none",marginBottom:4,fontFamily:"inherit"}} type="email" placeholder="Email for updates (optional)" value={emailIn} onChange={e=>setEmailIn(e.target.value)}/><Btn primary onClick={handleCreate} style={{marginTop:8}}>Create Room</Btn>
             <Btn ghost  onClick={() => setJoinMode(true)}>Join existing room</Btn>
@@ -576,16 +599,36 @@ export default function App() {
 
       {/* ════ CHAMETZ SALE PROMPT ═══════════════════════════════════════════ */}
       {showSalePrompt && (
-        <Modal title="Sell Your Chametz" onClose={() => setShowSalePrompt(false)}>
-          <p style={{fontSize:15, lineHeight:1.65, color:C.text, margin:0}}>
-            Before Passover you must sell or dispose of all chametz. Would you like to sell your chametz online through a rabbi?
-          </p>
-          <Btn primary onClick={() => {
-            window.open('https://www.chabad.org/holidays/passover/sell_chometz_cdo/jewish/Sell-Your-Chametz-Online.htm', '_blank', 'noopener');
-            setShowSalePrompt(false);
-          }}>Yes — Sell My Chametz</Btn>
-          <Btn ghost onClick={() => setShowSalePrompt(false)}>Not Now</Btn>
-        </Modal>
+        <div style={S.overlay} onClick={e => { if (e.target===e.currentTarget) setShowSalePrompt(false); }}>
+          <div style={{...S.sheet, background:'#FFF8E7', borderTop:'3px solid #FFB300'}}>
+            <div style={{padding:'28px 24px 32px', display:'flex', flexDirection:'column', alignItems:'center', gap:12, textAlign:'center'}}>
+              <div style={{fontSize:52}}>🍞</div>
+              <div style={{fontSize:21, fontWeight:700, color:'#7a4f00', fontFamily:'"Fraunces",Georgia,serif', lineHeight:1.2}}>
+                Have you sold your Chametz?
+              </div>
+              <p style={{fontSize:14, color:'#8a6000', lineHeight:1.65, margin:0}}>
+                Selling chametz before Passover is a halachic requirement. A rabbi sells it on your behalf and buys it back after Pesach ends.
+              </p>
+              <button className="tappable" onClick={() => setShowSalePrompt(false)}
+                style={{width:'100%', padding:'13px', borderRadius:14, border:'none',
+                  background:C.green, color:'#fff', fontSize:16, fontWeight:600, cursor:'pointer', marginTop:4}}>
+                Yes, already sold ✓
+              </button>
+              <button className="tappable" onClick={() => {
+                window.open('https://www.chabad.org/holidays/passover/sell_chometz_cdo/jewish/Sell-Your-Chametz-Online.htm', '_blank', 'noopener');
+                setShowSalePrompt(false);
+              }}
+                style={{width:'100%', padding:'13px', borderRadius:14, border:'2px solid #FFB300',
+                  background:'#FFB300', color:'#fff', fontSize:16, fontWeight:600, cursor:'pointer'}}>
+                Sell Chametz Online →
+              </button>
+              <button onClick={() => setShowSalePrompt(false)}
+                style={{background:'none', border:'none', color:C.muted, fontSize:14, cursor:'pointer', padding:'4px'}}>
+                Skip for now
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* ════ ACTIVITY FEED ══════════════════════════════════════════════════ */}

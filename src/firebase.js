@@ -89,6 +89,19 @@ export async function logActivity(roomCode, message) {
   });
 }
 
+/** Save email → room code mapping for "Find My Room" lookup */
+export async function saveEmailRoom(email, roomCode) {
+  const key = email.toLowerCase().replace(/[^a-z0-9]/g, '_');
+  await set(ref(db, `email_rooms/${key}`), roomCode);
+}
+
+/** Look up a room code by email address */
+export async function lookupRoomByEmail(email) {
+  const key = email.toLowerCase().replace(/[^a-z0-9]/g, '_');
+  const snap = await get(ref(db, `email_rooms/${key}`));
+  return snap.exists() ? snap.val() : null;
+}
+
 /** Listen to room in real time — returns unsubscribe fn */
 export function subscribeRoom(roomCode, callback) {
   const r = ref(db, `rooms/${roomCode}`);
