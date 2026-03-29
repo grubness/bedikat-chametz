@@ -392,7 +392,7 @@ export default function App() {
               )}
               <button className="tappable" style={S.hdrBtn} onClick={() => setShowActivity(true)}>📋</button>
               <button className="tappable" style={S.hdrBtn} onClick={() => setShowBracha(true)}>✡️</button>
-              <button className="tappable" style={S.hdrBtn} onClick={() => setScreen('guide')}>📖</button>
+              <button className="tappable" style={S.hdrBtn} onClick={() => setScreen('guide')}>📖</button><button className="tappable" style={S.hdrBtn} onClick={()=>{const msg="Join my Bedikat Chametz! Open https://bedikat-chametz.vercel.app - Room: "+roomCode;navigator.share?navigator.share({title:"Bedikat Chametz",text:msg}).catch(()=>{}):navigator.clipboard.writeText(msg).then(()=>showToast("Copied!")).catch(()=>showToast("Room: "+roomCode))}}>Share</button>
             </div>
           </div>
 
