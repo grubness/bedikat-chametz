@@ -1151,4 +1151,4 @@ const S = {
     fontSize:14, zIndex:1000 },
 };
 
-const FIND_CELEBRATIONS = ['🕯✨','🎊','⭐️','🌟','✡️✨','🎉','💫','🕎','⚡️','🌠'];
+
