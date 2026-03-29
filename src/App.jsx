@@ -416,7 +416,7 @@ export default function App() {
           </div>
 
           {/* Tabs */}
-          <div style={{display:'flex', margin:'0 14px 10px', paddingBottom:'100px', background:C.border, borderRadius:13, padding:3}}>
+          <div style={{display:'flex', margin:'0 14px 10px', background:C.border, borderRadius:13, padding:3}}>
             {['hide','find'].map(t => (
               <button key={t} className="tappable" onClick={() => setTab(t)}
                 style={{flex:1, padding:'9px 0', border:'none', cursor:'pointer', borderRadius:10,
@@ -431,7 +431,7 @@ export default function App() {
           </div>
 
           {/* Piece list */}
-          <div style={{flex:1, padding:'0 14px', display:'flex', flexDirection:'column', gap:8}}>
+          <div style={{flex:1, padding:'0 14px', display:'flex', flexDirection:'column', gap:8, paddingBottom:120}}>
             {pieces.map(p => (
               <PieceRow key={p.number} piece={p} mode={tab}
                 onHide={() => setEditPiece({...p, _mode:'hide'})}
