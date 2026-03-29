@@ -363,7 +363,7 @@ export default function App() {
             <Btn primary onClick={handleJoin} style={{marginTop:8}}>Join Room</Btn>
             <Btn ghost  onClick={() => setJoinMode(false)}>Create a new room instead</Btn>
           </> : <>
-            <Btn primary onClick={handleCreate} style={{marginTop:8}}>Create Room</Btn>
+            <input style={{width:"100%",padding:"13px 15px",borderRadius:13,border:"1.5px solid #e5e5ea",fontSize:16,background:"white",outline:"none",marginBottom:4,fontFamily:"inherit"}} type="email" placeholder="Email for updates (optional)" value={emailIn} onChange={e=>setEmailIn(e.target.value)}/><Btn primary onClick={handleCreate} style={{marginTop:8}}>Create Room</Btn>
             <Btn ghost  onClick={() => setJoinMode(true)}>Join existing room</Btn>
           </>}
           <p style={{fontSize:13, color:C.muted, lineHeight:1.55, marginTop:6}}>
