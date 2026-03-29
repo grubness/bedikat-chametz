@@ -417,7 +417,7 @@ export default function App() {
           </div>
 
           {/* Tabs */}
-          <div style={{display:'flex', margin:'0 14px 10px', background:C.border, borderRadius:13, padding:3}}>
+          <div style={{display:'flex', margin:'0 14px 10px', paddingBottom:'100px', background:C.border, borderRadius:13, padding:3}}>
             {['hide','find'].map(t => (
               <button key={t} className="tappable" onClick={() => setTab(t)}
                 style={{flex:1, padding:'9px 0', border:'none', cursor:'pointer', borderRadius:10,
