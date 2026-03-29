@@ -86,7 +86,7 @@ export default function App() {
   const [isAdmin,      setIsAdmin]      = useState(load('bcAdmin',false));
   const [roomData,     setRoomData]     = useState(null);
   const [nameIn,       setNameIn]       = useState('');
-  const [codeIn,       setCodeIn]       = useState('');
+  const [emailIn, setEmailIn] = useState(''); const [codeIn,       setCodeIn]       = useState('');
   const [joinMode,     setJoinMode]     = useState(false);
   const [tab,          setTab]          = useState('hide');
   const [editPiece,    setEditPiece]    = useState(null);
