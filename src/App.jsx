@@ -18,8 +18,7 @@ const C = {
   gold:'#FFD60A',
 };
 
-const ROOMS = ['Kitchen','Living Room','Bedroom 1','Bedroom 2','Dining Room',
-               'Hallway','Bathroom','Office','Basement','Attic','Garage','Porch','Other'];
+const ROOMS=["Kitchen","Living Room","Master Bedroom","Bedroom 2","Bedroom 3","Bedroom 4","Bedroom 5","Dining Room","Hallway","Main Bathroom","Bathroom 2","Bathroom 3","Office","Basement","Attic","Garage","Porch","Other"];
 
 const BRACHA = {
   hebrew:'בָּרוּךְ אַתָּה יְיָ אֱלֹהֵינוּ מֶלֶךְ הָעוֹלָם אֲשֶׁר קִדְּשָׁנוּ בְּמִצְוֹתָיו וְצִוָּנוּ עַל בִּיעוּר חָמֵץ',
