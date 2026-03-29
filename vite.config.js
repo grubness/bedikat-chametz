@@ -1,20 +1,6 @@
-{
-  "name": "bedikat-chametz",
-  "version": "2.0.0",
-  "private": true,
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "firebase": "^10.12.0",
-    "react": "^18.3.0",
-    "react-dom": "^18.3.0"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-react": "^4.3.0",
-    "vite": "^5.3.0"
-  }
-}
-```
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+
+export default defineConfig({
+  plugins: [react()],
+});
